@@ -9,17 +9,48 @@
 // const OwlBotSearchURL = 'https://owlbot.info/api/v4/dictionary/';
 
 function welcomePage() {
+  console.log("welcome page running")
   $('main').html(
     `<section>
       <div>
         <h3>Thank you so much for choosing us! Let's go practicing GRE verbal questions.</h3>
       </div>
       <div>
-        <button class='start-button' type='button'>
+        <button class='readyGo' type='button'>
            <span>Ready? GO!</span>
         </button>
       </div>
     </section>`
+  )
+}
+
+function showQuestionTypes() {
+  $('main').on('click', '.readyGo', function() {
+    console.log("display questions type choice");
+    displayQuestionTypes();
+  })
+}
+
+function displayQuestionTypes() {
+  $('main').html(
+    `
+    <section class="questionTypes">
+      <div>
+        <h3>Text Completion Questions</h3>
+        <p>Text completion questions omitted crucial words from short passages and ask the test taker to use the remaining information in the passage as a basis for selecting words or short phrases to fill the blanks and create a coherent, meaningful whole.</p>
+        <button class='questionTypeButton' type='button'>
+        <span>I choose Text Completion Questions</span>
+        </button>
+      </div>
+      <div>
+        <h3>Sentence Equivalence Questions</h3>
+        <p>Sentence Equivalence questions consist of a single sentence with just one blank, and you will be asked to find two choices that lead to a complete, coherent sentence while producing sentences that mean the same thing.</p>
+        <button class='questionTypeButton' type='button'>
+        <span>I choose Sentence Equivalence Questions</span>
+        </button>
+      </div>
+    <section>
+    `
   )
 }
 
