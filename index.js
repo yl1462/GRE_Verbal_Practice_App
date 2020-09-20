@@ -2,30 +2,55 @@
 // let totalNumberOfQuestion = resJson.data.length;
 // let totalScore = 0;
 
-// const GREKey = 'f6bf5906c1msh45ccd6bea4e4595p19e710jsn64d68bc7e7d2';
-// const GRESearchURL = 'https://gre-verbal.p.rapidapi.com';
+const GREKey = 'f6bf5906c1msh45ccd6bea4e4595p19e710jsn64d68bc7e7d2';
+const GRESearchURL = 'https://gre-verbal.p.rapidapi.com';
 
-// const OwlBotKey = '9faa238a2ea15e95757bb04c25875855ffbb8f94';
-// const OwlBotSearchURL = 'https://owlbot.info/api/v4/dictionary/';
+const OwlBotKey = '9faa238a2ea15e95757bb04c25875855ffbb8f94';
+const OwlBotSearchURL = 'https://owlbot.info/api/v4/dictionary/';
 
 function welcomePage() {
   console.log("welcome page running")
   $('main').html(
-    `<section>
-      <div>
-        <h3>Thank you so much for choosing us! Let's go practicing GRE verbal questions.</h3>
-      </div>
-      <div>
-        <button class='readyGo' type='button'>
-           <span>Ready? GO!</span>
-        </button>
-      </div>
-    </section>`
+    `
+      <section>
+        <div>
+          <h3>Thank you so much for choosing us! Let's go practicing GRE verbal questions.</h3>
+        </div>
+        <div>
+          <button class='readyGo' type='button'>
+            <span>Ready? GO!</span>
+          </button>
+        </div>
+      </section>
+      <footer>
+        <hr>
+        <section class="contactFont">
+          <h5>Contact for Tech Support</h5>
+            <div id="Contact">
+              <div class="group">
+                <div class="item-double">
+                  <form action="https://formspree.io/xgenbrgo" method="POST" enctype="multipart/form-data">
+                    <label for="user-name">Name:</label>
+                    <input id="user-name" type="text" name="name" required>
+
+                    <label for="user-email">Email:</label>
+                    <input id="user-email" type="text" name="email" required>
+
+                    <label for="user-message">Message:</label>
+                    <textarea id="user-message" name="message" required></textarea>
+                    <button type="submit">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </section>
+      </footer>
+    `
   )
 }
 
 function showQuestionTypes() {
-  $('main').on('click', '.readyGo', function() {
+  $('main').on('click', '.readyGo', function () {
     console.log("display questions type choice");
     displayQuestionTypes();
   })
@@ -42,6 +67,9 @@ function displayQuestionTypes() {
         <span>I choose Text Completion Questions</span>
         </button>
       </div>
+
+      <hr>
+
       <div>
         <h3>Sentence Equivalence Questions</h3>
         <p>Sentence Equivalence questions consist of a single sentence with just one blank, and you will be asked to find two choices that lead to a complete, coherent sentence while producing sentences that mean the same thing.</p>
@@ -54,6 +82,60 @@ function displayQuestionTypes() {
   )
 }
 
+function TCQButton() {
+  $('main').on('click', '.questionTypeButton', function () {
+    console.log('displaying TCQ questions');
+    fetchTCQquestions();
+  });
+}
+
+function fetchTCQquestions() {
+  fetch("https://gre-verbal.p.rapidapi.com/api/v1/questions?subcat=TC&count=10", {
+    "method": "GET",
+    "headers": {
+      "x-rapidapi-host": "gre-verbal.p.rapidapi.com",
+      "x-rapidapi-key": "f6bf5906c1msh45ccd6bea4e4595p19e710jsn64d68bc7e7d2"
+    }
+  })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    // .then(res => {
+    //   console.log(res)
+    //   if (res.ok) {
+    //     return res.json()
+    //   }
+    //   return res.json().then(error => Promise.reject(error))
+    // })
+    // .then(resJson => displayTCQquestions(resJson))
+    .catch(error => {
+      errorMessage(error)
+    });
+}
+
+function displayTCQquestions() {
+  
+  <form>
+      <h4>${resJson.data[i].description}</h4>
+      <div class="formDiv">
+      <label>
+        <input type='radio' name='answer' value='${choice1}'/>${resJson.data[i].option[p]}
+      </label>
+      <label>
+        <input type='radio' name='answer' value='${choice2}'/>${choice2}
+      </label>
+      <label> 
+        <input type='radio' name='answer' value='${choice3}'/>${choice3}
+      </label>
+      <label>   
+        <input type='radio' name='answer' value='${choice4}'/>${choice4}
+      </label>
+      </div>
+      <button class='turnIn' type='submit'>Turn in</button>
+    </form>
+}
+
 $(
-  welcomePage()
+  welcomePage(),
+  showQuestionTypes(),
+  TCQButton()
 )
