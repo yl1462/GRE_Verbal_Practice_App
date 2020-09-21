@@ -99,30 +99,35 @@ function fetchTCQquestions() {
   })
     .then(res => res.json())
     .then(data => console.log(data))
-    // .then(res => {
-    //   console.log(res)
-    //   if (res.ok) {
-    //     return res.json()
-    //   }
-    //   return res.json().then(error => Promise.reject(error))
-    // })
-    // .then(resJson => displayTCQquestions(resJson))
+    .then(res => {
+      console.log(res)
+      if (res.ok) {
+        return res.json()
+      }
+      return res.json().then(error => Promise.reject(error))
+    })
+    .then(resJson => displayTCQquestions(resJson))
     .catch(error => {
       errorMessage(error)
     });
 }
 
-function displayTCQquestions() {
-  for (let i = 0; i <resJson.data.length; )
-  <form>
-      <h4>${resJson.data[i].description}</h4>
-      <div class="formDiv">
-      <label>
-        <input type='radio' name='answer' value='${choice1}'/>${resJson.data[i].option[p]}
-      </label>
-      </div>
-      <button class='turnIn' type='submit'>Turn in</button>
-    </form>
+function displayTCQquestions(resJson) {
+  for (let i = 0; i < resJson.data.options.length; i++) {
+    $('main').html(
+      `
+        <form>
+          <h4>${resJson.data[0].description}</h4>
+          <div class="formDiv">
+          <label>
+            <input type='radio' name='answer' value='${resJson.data[0].options[i]}'/>${resJson.data[0].options[i]}
+          </label>
+          </div>
+          <button class='turnIn' type='submit'>Turn in</button>
+        </form>
+      `
+    )
+  }
 }
 
 $(
