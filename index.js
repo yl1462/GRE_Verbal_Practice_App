@@ -1,5 +1,5 @@
 // let currentQuestionNumber = 0;
-// let totalNumberOfQuestion = resJson.data.length;
+// let totalNumberOfQuestion = data.length;
 // let totalScore = 0;
 
 const GREKey = 'f6bf5906c1msh45ccd6bea4e4595p19e710jsn64d68bc7e7d2';
@@ -98,36 +98,29 @@ function fetchTCQquestions() {
     }
   })
     .then(res => res.json())
-    .then(data => console.log(data))
-    .then(res => {
-      console.log(res)
-      if (res.ok) {
-        return res.json()
-      }
-      return res.json().then(error => Promise.reject(error))
+    .then(data => {
+      console.log(data)
     })
-    .then(resJson => displayTCQquestions(resJson))
-    .catch(error => {
-      errorMessage(error)
-    });
 }
 
-function displayTCQquestions(resJson) {
-  for (let i = 0; i < resJson.data.options.length; i++) {
-    $('main').html(
-      `
+function displayTCQquestions(data) {
+  let html = '';
+  for (let i = 0; i < data.options.length; i++) {
+    html += `
         <form>
-          <h4>${resJson.data[0].description}</h4>
+          <h4>${data[0].description}</h4>
           <div class="formDiv">
           <label>
-            <input type='radio' name='answer' value='${resJson.data[0].options[i]}'/>${resJson.data[0].options[i]}
+            <input type='radio' name='answer' value='${data[0].options[i]}'/>${data[0].options[i]}
           </label>
           </div>
           <button class='turnIn' type='submit'>Turn in</button>
         </form>
       `
-    )
   }
+  $('main').html(
+    html
+  )
 }
 
 $(
