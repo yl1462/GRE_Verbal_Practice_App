@@ -113,21 +113,12 @@ function fetchTCQquestions() {
 }
 
 function displayTCQquestions() {
-  
+  for (let i = 0; i <resJson.data.length; )
   <form>
       <h4>${resJson.data[i].description}</h4>
       <div class="formDiv">
       <label>
         <input type='radio' name='answer' value='${choice1}'/>${resJson.data[i].option[p]}
-      </label>
-      <label>
-        <input type='radio' name='answer' value='${choice2}'/>${choice2}
-      </label>
-      <label> 
-        <input type='radio' name='answer' value='${choice3}'/>${choice3}
-      </label>
-      <label>   
-        <input type='radio' name='answer' value='${choice4}'/>${choice4}
       </label>
       </div>
       <button class='turnIn' type='submit'>Turn in</button>
