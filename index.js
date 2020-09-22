@@ -8,6 +8,7 @@ const GRESearchURL = 'https://gre-verbal.p.rapidapi.com';
 const OwlBotKey = '9faa238a2ea15e95757bb04c25875855ffbb8f94';
 const OwlBotSearchURL = 'https://owlbot.info/api/v4/dictionary/';
 
+//welcome page
 function welcomePage() {
   console.log("welcome page running")
   $('main').html(
@@ -49,6 +50,7 @@ function welcomePage() {
   )
 }
 
+//let the user choose a question type out of 2
 function showQuestionTypes() {
   $('main').on('click', '.readyGo', function () {
     console.log("display questions type choice");
@@ -56,6 +58,7 @@ function showQuestionTypes() {
   })
 }
 
+//pairing with the function above to display the 2 question types
 function displayQuestionTypes() {
   $('main').html(
     `
@@ -82,6 +85,7 @@ function displayQuestionTypes() {
   )
 }
 
+//when user choose Text Completion question
 function TCQButton() {
   $('main').on('click', '.questionTypeButton', function () {
     console.log('displaying TCQ questions');
@@ -89,6 +93,7 @@ function TCQButton() {
   });
 }
 
+//fetching tc questions
 function fetchTCQquestions() {
   fetch("https://gre-verbal.p.rapidapi.com/api/v1/questions?subcat=TC&count=10", {
     "method": "GET",
@@ -104,26 +109,45 @@ function fetchTCQquestions() {
     })
 }
 
+//display tc questions
 function displayTCQquestions(data) {
-  let html = '';
-  for (let i = 0; i < data.data[0].options.length; i++) {
-    html += `
-        <form>
-          <div class="formDiv">
-          <label>
-            <input type='radio' name='answers' value='${data.data[0].options[i]}'/>${data.data[0].options[i]}
-          </label>
-          </div>
-        </form>
-      `
-  }
   $('main').html(
-    `<h4>${data.data[0].description}</h4>`+
-    html + `<button class='turnIn' type='submit'>Turn in</button>`
+    `<h4>${addDropDown(data.data[0].description, data.data[0].options)}</h4>
+     <button class='turnIn' type='submit'>Turn in</button>`
   )
 }
 
-function 
+//the drop down select function
+function addDropDown(desc, options) {
+  let question = desc.split('__________')
+  let option = ''
+  for (let i = 0; i < options.length; i++) {
+    option += `${question[i]}`
+    option += `<select>`
+    for (let j = 0; j < options[i].length; j++) {
+      option += `<option>${options[i][j]}</option>`
+    }
+    option += `</select>`
+    if(i === options.length - 1) {
+      option += `${question[i+1]}`
+    }
+  }
+  return option
+}
+
+//replace the underlines in the question with the select drop down menu
+function split(desc) {
+  let question = desc.split('__________')
+  let result = ''
+  for (let i = 0; i < question.length; i++) {
+    if(i !== question.length - 1) {
+      result += `${question[i]}(${i + 1}.)__________`
+    } else {
+      result += `${question[i]}`
+    }
+  }
+  return result
+}
 
 $(
   welcomePage(),
