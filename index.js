@@ -109,20 +109,21 @@ function displayTCQquestions(data) {
   for (let i = 0; i < data.data[0].options.length; i++) {
     html += `
         <form>
-          <h4>${data.data[0].description}</h4>
           <div class="formDiv">
           <label>
-            <input type='radio' name='answer' value='${data.data[0].options[i]}'/>${data.data[0].options[i]}
+            <input type='radio' name='answers' value='${data.data[0].options[i]}'/>${data.data[0].options[i]}
           </label>
           </div>
-          <button class='turnIn' type='submit'>Turn in</button>
         </form>
       `
   }
   $('main').html(
-    html
+    `<h4>${data.data[0].description}</h4>`+
+    html + `<button class='turnIn' type='submit'>Turn in</button>`
   )
 }
+
+function 
 
 $(
   welcomePage(),
