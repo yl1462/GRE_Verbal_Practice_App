@@ -99,19 +99,20 @@ function fetchTCQquestions() {
   })
     .then(res => res.json())
     .then(data => {
-      console.log(data)
+      console.log(data);
+      displayTCQquestions(data)
     })
 }
 
 function displayTCQquestions(data) {
   let html = '';
-  for (let i = 0; i < data.options.length; i++) {
+  for (let i = 0; i < data.data[0].options.length; i++) {
     html += `
         <form>
-          <h4>${data[0].description}</h4>
+          <h4>${data.data[0].description}</h4>
           <div class="formDiv">
           <label>
-            <input type='radio' name='answer' value='${data[0].options[i]}'/>${data[0].options[i]}
+            <input type='radio' name='answer' value='${data.data[0].options[i]}'/>${data.data[0].options[i]}
           </label>
           </div>
           <button class='turnIn' type='submit'>Turn in</button>
