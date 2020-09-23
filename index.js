@@ -127,7 +127,7 @@ function addDropDown(desc, options) {
   let option = ''
   for (let i = 0; i < options.length; i++) {
     option += `${question[i]}`
-    option += `<select id='TCQanswer'>`
+    option += `<select id='TCQanswer${i}'>`
     for (let j = 0; j < options[i].length; j++) {
       option += `<option>${options[i][j]}</option>`
     }
@@ -153,20 +153,30 @@ function split(desc) {
   return result
 }
 
-function submitAnswer() {
+function submitTCQanswer() {
   $('main').on('submit', 'form', function (event) {
     event.preventDefault();
     checkTCQanswer();
   })
 }
 
-// function checkTCQanswer() {
-//   let TCQanswer = $('#TCQanswer option:selected').text();
-//   if (TCQanswer === data.data(0).answers)
-// }
+function checkTCQanswer() {
+  let TCQanswer = $('#TCQanswer${i} option:selected').text();
+  console.log(TCQanswer);
+  // if (TCQanswer === data.data(0).answers) {
+  //   $('main').html(
+  //     `
+  //     <h4>Well done!<h4>
+  //     `
+  //   )
+  // } else {
+  //   wrongAnswer();
+  // }
+}
 
 $(
   welcomePage(),
   showQuestionTypes(),
-  TCQButton()
+  TCQButton(),
+  submitTCQanswer()
 )
