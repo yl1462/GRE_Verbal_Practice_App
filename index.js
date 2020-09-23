@@ -112,8 +112,12 @@ function fetchTCQquestions() {
 //display tc questions
 function displayTCQquestions(data) {
   $('main').html(
-    `<h4>${addDropDown(data.data[0].description, data.data[0].options)}</h4>
-     <button class='turnIn' type='submit'>Turn in</button>`
+    `
+    <form>
+    <h4>${addDropDown(data.data[0].description, data.data[0].options)}</h4>
+     <button class='turnIn' type='submit'>Turn in</button>
+    </form>
+     `
   )
 }
 
@@ -123,7 +127,7 @@ function addDropDown(desc, options) {
   let option = ''
   for (let i = 0; i < options.length; i++) {
     option += `${question[i]}`
-    option += `<select>`
+    option += `<select id='TCQanswer'>`
     for (let j = 0; j < options[i].length; j++) {
       option += `<option>${options[i][j]}</option>`
     }
@@ -149,9 +153,17 @@ function split(desc) {
   return result
 }
 
-function checkTCQanswer() {
-  event.preventDefault();
+function submitAnswer() {
+  $('main').on('submit', 'form', function (event) {
+    event.preventDefault();
+    checkTCQanswer();
+  })
 }
+
+// function checkTCQanswer() {
+//   let TCQanswer = $('#TCQanswer option:selected').text();
+//   if (TCQanswer === data.data(0).answers)
+// }
 
 $(
   welcomePage(),
