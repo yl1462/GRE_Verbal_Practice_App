@@ -149,6 +149,10 @@ function split(desc) {
   return result
 }
 
+function checkTCQanswer() {
+  event.preventDefault();
+}
+
 $(
   welcomePage(),
   showQuestionTypes(),
