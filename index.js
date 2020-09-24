@@ -67,7 +67,7 @@ function displayQuestionTypes() {
       <div>
         <h3>Text Completion Questions</h3>
         <p>Text completion questions omitted crucial words from short passages and ask the test taker to use the remaining information in the passage as a basis for selecting words or short phrases to fill the blanks and create a coherent, meaningful whole.</p>
-        <button class='questionTypeButton' type='button'>
+        <button class='TCQButton' type='button'>
         <span>I choose Text Completion Questions</span>
         </button>
       </div>
@@ -77,7 +77,7 @@ function displayQuestionTypes() {
       <div>
         <h3>Sentence Equivalence Questions</h3>
         <p>Sentence Equivalence questions consist of a single sentence with just one blank, and you will be asked to find two choices that lead to a complete, coherent sentence while producing sentences that mean the same thing.</p>
-        <button class='questionTypeButton' type='button'>
+        <button class='SEQButton' type='button'>
         <span>I choose Sentence Equivalence Questions</span>
         </button>
       </div>
@@ -88,7 +88,7 @@ function displayQuestionTypes() {
 
 //when user choose Text Completion question
 function TCQButton() {
-  $('main').on('click', '.questionTypeButton', function () {
+  $('main').on('click', '.TCQButton', function () {
     console.log('displaying TCQ questions');
     fetchTCQquestions();
   });
@@ -134,8 +134,8 @@ function addDropDown(desc, options) {
       option += `<option value="${j}">${options[i][j]}</option>`
     }
     option += `</select>`
-    if(i === options.length - 1) {
-      option += `${question[i+1]}`
+    if (i === options.length - 1) {
+      option += `${question[i + 1]}`
     }
   }
   return option
@@ -149,46 +149,64 @@ function submitTCQanswer() {
 }
 
 function checkTCQanswer() {
-  let i = 0;
-  let TCQanswer = '';
-  // do {
-  //   TCQanswer = $(`#TCQanswer${i} option:selected`).val();
-  //   console.log(TCQanswer);
-  //   i++;
-  // } while (TCQanswer != '');
-  // console.log(QuizData.answers)
+  let incorrect = false
   for (let i = 0; i < QuizData.answers.length; i++) {
-    console.log(QuizData.answers[i][0])
     let correctAnswer = `${QuizData.answers[i][0]}`
     let userAnswer = $(`#TCQanswer${i} option:selected`).val();
-    console.log(correctAnswer, userAnswer);
-    // if (correctAnswer !== userAnswer) {
-    //   wrongAnswer()
-    //   break
-    // } else {
-    //   $('main').html(
-    //     `
-    //     <h4>Well done!<h4>
-    //     `
-    //   )
-    // }
+    if (correctAnswer !== userAnswer) {
+      incorrect = true
+      break
+    }
   }
-  
+  if (incorrect) {
+    wrongAnswer()
+  } else {
+    $('main').html(
+      `
+      <h4>Well done!<h4>
+      <p>Would you like to try another one?</p>
+      <button class='TCQButton' type='submit'>Yes!</button>
+      <button class='closeWindow' type='submit'>That's all for today!</button>
+      `
+    )
+  }
+}
 
-  // if (TCQanswer === QuizData.answers) {
-    
-  // } else {
-  //   wrongAnswer();
-  // }
+function displayCorrectTCQ() {
+  let TCQquestion = `<h2>${QuizData.description}</h2>`
+  let html = ''
+  $('main').html(TCQquestion)
+  for (let i = 0; i < QuizData.answers.length; i++) {
+    html += `
+    <button class='TCQCorrectAnswer' type='submit'>${QuizData.answers[i][0]}</button>
+    `
+  }
+  $('main').html(html)
 }
 
 function wrongAnswer() {
   console.log("wrong!")
+  $('main').html(
+    `
+    <h3>Not quite there yet... but you are on the right track!</h3>
+    <h4>${displayCorrectTCQ()}</h4>
+    <p>Would you like to try another one?</p>
+    <button class='TCQButton' type='submit'>Yes!</button>
+    <button class='closeWindow' type='submit'>That's all for today!</button>
+    `
+  )
+}
+
+function closeWindow () {
+  $('.closeWindow').on('click', function(){
+    window.close();
+  })
 }
 
 $(
   welcomePage(),
   showQuestionTypes(),
   TCQButton(),
-  submitTCQanswer()
+  submitTCQanswer(),
+  closeWindow()
 )
