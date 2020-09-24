@@ -105,6 +105,7 @@ function fetchTCQquestions() {
     .then(res => res.json())
     .then(data => {
       console.log(data);
+      const QuizData = data.data[0];
       displayTCQquestions(data)
     })
 }
@@ -161,17 +162,23 @@ function submitTCQanswer() {
 }
 
 function checkTCQanswer() {
-  let TCQanswer = $('#TCQanswer${i} option:selected').text();
-  console.log(TCQanswer);
-  // if (TCQanswer === data.data(0).answers) {
-  //   $('main').html(
-  //     `
-  //     <h4>Well done!<h4>
-  //     `
-  //   )
-  // } else {
-  //   wrongAnswer();
-  // }
+  let i = 0;
+  let TCQanswer = '';
+  do {
+    TCQanswer = $('#TCQanswer${i} option:selected').text();
+    console.log(TCQanswer);
+    i++;
+  } while (TCQanswer != '');
+  
+  if (TCQanswer === data.data(0).answers) {
+    $('main').html(
+      `
+      <h4>Well done!<h4>
+      `
+    )
+  } else {
+    wrongAnswer();
+  }
 }
 
 $(
