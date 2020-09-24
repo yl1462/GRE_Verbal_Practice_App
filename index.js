@@ -4,6 +4,7 @@
 
 const GREKey = 'f6bf5906c1msh45ccd6bea4e4595p19e710jsn64d68bc7e7d2';
 const GRESearchURL = 'https://gre-verbal.p.rapidapi.com';
+let QuizData
 
 const OwlBotKey = '9faa238a2ea15e95757bb04c25875855ffbb8f94';
 const OwlBotSearchURL = 'https://owlbot.info/api/v4/dictionary/';
@@ -105,7 +106,7 @@ function fetchTCQquestions() {
     .then(res => res.json())
     .then(data => {
       console.log(data);
-      const QuizData = data.data[0];
+      QuizData = data.data[0];
       displayTCQquestions(data)
     })
 }
@@ -130,7 +131,7 @@ function addDropDown(desc, options) {
     option += `${question[i]}`
     option += `<select id='TCQanswer${i}'>`
     for (let j = 0; j < options[i].length; j++) {
-      option += `<option>${options[i][j]}</option>`
+      option += `<option value="${j}">${options[i][j]}</option>`
     }
     option += `</select>`
     if(i === options.length - 1) {
@@ -138,20 +139,6 @@ function addDropDown(desc, options) {
     }
   }
   return option
-}
-
-//replace the underlines in the question with the select drop down menu
-function split(desc) {
-  let question = desc.split('__________')
-  let result = ''
-  for (let i = 0; i < question.length; i++) {
-    if(i !== question.length - 1) {
-      result += `${question[i]}(${i + 1}.)__________`
-    } else {
-      result += `${question[i]}`
-    }
-  }
-  return result
 }
 
 function submitTCQanswer() {
@@ -164,21 +151,39 @@ function submitTCQanswer() {
 function checkTCQanswer() {
   let i = 0;
   let TCQanswer = '';
-  do {
-    TCQanswer = $('#TCQanswer${i} option:selected').text();
-    console.log(TCQanswer);
-    i++;
-  } while (TCQanswer != '');
-  
-  if (TCQanswer === data.data(0).answers) {
-    $('main').html(
-      `
-      <h4>Well done!<h4>
-      `
-    )
-  } else {
-    wrongAnswer();
+  // do {
+  //   TCQanswer = $(`#TCQanswer${i} option:selected`).val();
+  //   console.log(TCQanswer);
+  //   i++;
+  // } while (TCQanswer != '');
+  // console.log(QuizData.answers)
+  for (let i = 0; i < QuizData.answers.length; i++) {
+    console.log(QuizData.answers[i][0])
+    let correctAnswer = `${QuizData.answers[i][0]}`
+    let userAnswer = $(`#TCQanswer${i} option:selected`).val();
+    console.log(correctAnswer, userAnswer);
+    // if (correctAnswer !== userAnswer) {
+    //   wrongAnswer()
+    //   break
+    // } else {
+    //   $('main').html(
+    //     `
+    //     <h4>Well done!<h4>
+    //     `
+    //   )
+    // }
   }
+  
+
+  // if (TCQanswer === QuizData.answers) {
+    
+  // } else {
+  //   wrongAnswer();
+  // }
+}
+
+function wrongAnswer() {
+  console.log("wrong!")
 }
 
 $(
