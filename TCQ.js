@@ -178,7 +178,7 @@ function displayCorrectTCQ() {
   let html = `<h3>${QuizData.description}</h3>`
   for (let i = 0; i < QuizData.answers.length; i++) {
     html += `
-    <button class='TCQCorrectAnswer' type='submit'>${QuizData.options[i][QuizData.answers[i][0]]}</button>
+    ${QuizData.options[i][QuizData.answers[i][0]]}
     `
   }
   return html
@@ -188,7 +188,8 @@ function wrongAnswer() {
   console.log("wrong!")
   $('main').html(
     `
-    <h3>${displayCorrectTCQ()}</h3>
+    <h3>Correct Answers: ${displayCorrectTCQ()}</h3>
+    <h3>Look up new vocabulary here please:
     <h4>Not quite there yet... but you are on the right track!</h4>
     <p>Would you like to try another one?</p>
     <button class='TCQButton' type='submit'>Yes!</button>
@@ -198,6 +199,12 @@ function wrongAnswer() {
     `
   )
 }
+
+// function watchForm() {
+
+// }
+
+// function disctionary()
 
 $(
   welcomePage(),

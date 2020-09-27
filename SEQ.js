@@ -1,4 +1,4 @@
-let SEQdate
+let SEQdata
 //here on is for Sentence Equivalence Questions
 
 function SEQButton() {
@@ -21,18 +21,18 @@ function fetchSEQquestions() {
     .then(data => {
       console.log(data);
       SEQdata = data.data[0];
-      displaySEQquestions(data)
+      displaySEQquestions(SEQdata)
     })
 }
 
 //display SE questions
-function displaySEQquestions() {
+function displaySEQquestions(SEQdata) {
   $('main').html(
     `
     <form>
     <h4>${SEQdata.description}</h4>
-    <p>${SEQcheckBox(SEQdata.options)}</p>
-     <button class='turnInSEQ' type='submit'>Turn in</button>
+    <p>${SEQcheckBox()}</p>
+     <button class='turnInSEQ' type='submit'>Turn In</button>
     </form>
      `
   )
@@ -50,8 +50,9 @@ function SEQcheckBox() {
 }
 
 function submitSEQanswer() {
-  $('main').on('.turnInSEQ', 'form', function (event) {
+  $('main').on('click', '.turnInSEQ', function (event) {
     event.preventDefault();
+    console.log('checkingSEQanswer')
     checkSEQanswer();
   })
 }
@@ -86,9 +87,7 @@ function displayCorrectSEQ() {
   console.log(SEQdata.description)
   let html = `<h2>${SEQdata.description}</h2>`
   for (let i = 0; i < SEQdata.answers.length; i++) {
-    html += `
-    <button class='SEQCorrectAnswer' type='submit'>${SEQdata.answers[i][0]}</button>
-    `
+    html += `${SEQdata.options[0][SEQdata.answers[0][i]]}`
   }
   return html
 }
