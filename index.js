@@ -175,15 +175,14 @@ function checkTCQanswer() {
 }
 
 function displayCorrectTCQ() {
-  let TCQquestion = `<h2>${QuizData.description}</h2>`
-  let html = ''
-  $('main').html(TCQquestion)
+  console.log(QuizData.description)
+  let html = `<h2>${QuizData.description}</h2>`
   for (let i = 0; i < QuizData.answers.length; i++) {
     html += `
     <button class='TCQCorrectAnswer' type='submit'>${QuizData.answers[i][0]}</button>
     `
   }
-  $('main').html(html)
+  return html
 }
 
 function wrongAnswer() {
@@ -194,6 +193,9 @@ function wrongAnswer() {
     <h4>${displayCorrectTCQ()}</h4>
     <p>Would you like to try another one?</p>
     <button class='TCQButton' type='submit'>Yes!</button>
+    <button class='readyGo' type='button'>
+        <span>Back to Main Menu</span>
+    </button>
     `
   )
 }
@@ -220,29 +222,29 @@ function fetchSEQquestions() {
     .then(data => {
       console.log(data);
       QuizData = data.data[0];
-      displaySEQquestions(data)
+      displaySEQquestions(QuizData)
     })
 }
 
 //display SE questions
-function displaySEQquestions(data) {
+function displaySEQquestions(QuizData) {
   $('main').html(
     `
     <form>
-    <h4>${data.data[0].description}</h4>
-    <p>${SEQcheckBox(data.data[0].options)}</p>
+    <h4>${QuizData.description}</h4>
+    <p>${SEQcheckBox(QuizData.options)}</p>
      <button class='turnIn' type='submit'>Turn in</button>
     </form>
      `
   )
 }
 
-function SEQcheckBox(options) {
+function SEQcheckBox(QuizData) {
   let option = ''
-  for (let i = 0; i < options.length; i++) {
+  for (let i = 0; i < QuizData.options[0].length; i++) {
     option += `
     <br>
-    <input type='checkbox'>${data.data[0].options[i]}
+    <input type='checkbox'>${QuizData.options[0][i]}
     `
   }
   return option
@@ -266,7 +268,7 @@ function checkSEQanswer() {
     }
   }
   if (incorrect) {
-    wrongAnswer()
+    wrongSEQanswer()
   } else {
     $('main').html(
       `
@@ -282,18 +284,17 @@ function checkSEQanswer() {
 }
 
 function displayCorrectSEQ() {
-  let SEQquestion = `<h2>${QuizData.description}</h2>`
-  let html = ''
-  $('main').html(SEQquestion)
+  console.log(QuizData.description)
+  let html = `<h2>${QuizData.description}</h2>`
   for (let i = 0; i < QuizData.answers.length; i++) {
     html += `
     <button class='SEQCorrectAnswer' type='submit'>${QuizData.answers[i][0]}</button>
     `
   }
-  $('main').html(html)
+  return html
 }
 
-function wrongAnswer() {
+function wrongSEQanswer() {
   console.log("wrong!")
   $('main').html(
     `
