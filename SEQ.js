@@ -1,3 +1,4 @@
+let SEQdate
 //here on is for Sentence Equivalence Questions
 
 function SEQButton() {
@@ -7,7 +8,7 @@ function SEQButton() {
   });
 }
 
-//fetching tc questions
+//fetching SE questions
 function fetchSEQquestions() {
   fetch("https://gre-verbal.p.rapidapi.com/api/v1/questions?subcat=SE&count=10", {
     "method": "GET",
@@ -19,37 +20,37 @@ function fetchSEQquestions() {
     .then(res => res.json())
     .then(data => {
       console.log(data);
-      QuizData = data.data[0];
-      displaySEQquestions(QuizData)
+      SEQdata = data.data[0];
+      displaySEQquestions(data)
     })
 }
 
 //display SE questions
-function displaySEQquestions(QuizData) {
+function displaySEQquestions() {
   $('main').html(
     `
     <form>
-    <h4>${QuizData.description}</h4>
-    <p>${SEQcheckBox(QuizData.options)}</p>
-     <button class='turnIn' type='submit'>Turn in</button>
+    <h4>${SEQdata.description}</h4>
+    <p>${SEQcheckBox(SEQdata.options)}</p>
+     <button class='turnInSEQ' type='submit'>Turn in</button>
     </form>
      `
   )
 }
 
-function SEQcheckBox(QuizData) {
+function SEQcheckBox() {
   let option = ''
-  for (let i = 0; i < QuizData.options[0].length; i++) {
+  for (let i = 0; i < SEQdata.options[0].length; i++) {
     option += `
     <br>
-    <input type='checkbox'>${QuizData.options[0][i]}
+    <input type='checkbox'>${SEQdata.options[0][i]}
     `
   }
   return option
 }
 
 function submitSEQanswer() {
-  $('main').on('submit', 'form', function (event) {
+  $('main').on('.turnInSEQ', 'form', function (event) {
     event.preventDefault();
     checkSEQanswer();
   })
@@ -57,8 +58,8 @@ function submitSEQanswer() {
 
 function checkSEQanswer() {
   let incorrect = false
-  for (let i = 0; i < QuizData.answers.length; i++) {
-    let correctAnswer = `${QuizData.answers[0][i]}`
+  for (let i = 0; i < SEQdata.answers.length; i++) {
+    let correctAnswer = `${SEQdata.answers[0][i]}`
     let userAnswer = $(`#SEQanswer${i} input:checked`).val();
     if (correctAnswer !== userAnswer) {
       incorrect = true
@@ -82,11 +83,11 @@ function checkSEQanswer() {
 }
 
 function displayCorrectSEQ() {
-  console.log(QuizData.description)
-  let html = `<h2>${QuizData.description}</h2>`
-  for (let i = 0; i < QuizData.answers.length; i++) {
+  console.log(SEQdata.description)
+  let html = `<h2>${SEQdata.description}</h2>`
+  for (let i = 0; i < SEQdata.answers.length; i++) {
     html += `
-    <button class='SEQCorrectAnswer' type='submit'>${QuizData.answers[i][0]}</button>
+    <button class='SEQCorrectAnswer' type='submit'>${SEQdata.answers[i][0]}</button>
     `
   }
   return html

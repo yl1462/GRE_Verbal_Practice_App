@@ -1,13 +1,10 @@
-// let currentQuestionNumber = 0;
-// let totalNumberOfQuestion = data.length;
-// let totalScore = 0;
-
 const GREKey = 'f6bf5906c1msh45ccd6bea4e4595p19e710jsn64d68bc7e7d2';
 const GRESearchURL = 'https://gre-verbal.p.rapidapi.com';
 let QuizData
 
 const OwlBotKey = '9faa238a2ea15e95757bb04c25875855ffbb8f94';
 const OwlBotSearchURL = 'https://owlbot.info/api/v4/dictionary/';
+
 
 //welcome page
 function welcomePage() {
