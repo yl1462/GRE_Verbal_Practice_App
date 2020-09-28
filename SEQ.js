@@ -31,7 +31,7 @@ function displaySEQquestions(SEQdata) {
     `
     <form>
     <h4>${SEQdata.description}</h4>
-    <p>${SEQcheckBox()}</p>
+    <select multiple>${SEQcheckBox()}</select>
      <button class='turnInSEQ' type='submit'>Turn In</button>
     </form>
      `
@@ -43,7 +43,7 @@ function SEQcheckBox() {
   for (let i = 0; i < SEQdata.options[0].length; i++) {
     option += `
     <br>
-    <input id='SEQanswer${i}' type='checkbox'>${SEQdata.options[0][i]}
+    <option id='SEQanswer' value='${SEQdata.options[0][i]}' type='checkbox'>${SEQdata.options[0][i]}</option>
     `
   }
   return option
@@ -58,23 +58,19 @@ function submitSEQanswer() {
 }
 
 function checkSEQanswer() {
-  let incorrect = false
   let userAnswer = ""
+  let correctAnswer = ""
   for (let i = 0; i < SEQdata.answers.length; i++) {
-    let correctAnswer = `${SEQdata.answers[0][i]}`
+    correctAnswer = `${SEQdata.options[0][SEQdata.answers[0][i]]}`
     console.log(correctAnswer)
-    userAnswer += $(`#SEQanswer${i} input:checked`).val();
+    userAnswer = $('input:checked').val();
     console.log(userAnswer)
-    if (correctAnswer !== userAnswer) {
-      incorrect = true
-      break
-    }
   }
-  if (incorrect) {
-    wrongSEQanswer()
-  } else {
-    $('main').html(
-      `
+    if (correctAnswer !== userAnswer) {
+      wrongSEQanswer()
+    } else {
+      $('main').html(
+        `
       <h4>Well done!<h4>
       <p>Would you like to try another one?</p>
       <button class='SEQButton' type='submit'>Yes!</button>
@@ -82,9 +78,10 @@ function checkSEQanswer() {
         <span>Back to Main Menu</span>
       </button>
       `
-    )
+      )
+    }
   }
-}
+
 
 function displayCorrectSEQ() {
   console.log(SEQdata.description)
@@ -105,7 +102,7 @@ function wrongSEQanswer() {
     <button class='SEQButton' type='submit'>Yes!</button>
     `
   )
-} 
+}
 
 $(
   SEQButton(),
