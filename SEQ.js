@@ -59,10 +59,11 @@ function submitSEQanswer() {
 
 function checkSEQanswer() {
   let incorrect = false
+  let userAnswer = ""
   for (let i = 0; i < SEQdata.answers.length; i++) {
     let correctAnswer = `${SEQdata.answers[0][i]}`
     console.log(correctAnswer)
-    let userAnswer = $(`#SEQanswer${i} input:checked`).val();
+    userAnswer += $(`#SEQanswer${i} input:checked`).val();
     console.log(userAnswer)
     if (correctAnswer !== userAnswer) {
       incorrect = true
