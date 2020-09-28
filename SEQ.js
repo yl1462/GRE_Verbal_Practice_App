@@ -43,7 +43,7 @@ function SEQcheckBox() {
   for (let i = 0; i < SEQdata.options[0].length; i++) {
     option += `
     <br>
-    <input type='checkbox'>${SEQdata.options[0][i]}
+    <input id='SEQanswer${i}' type='checkbox'>${SEQdata.options[0][i]}
     `
   }
   return option
@@ -61,7 +61,9 @@ function checkSEQanswer() {
   let incorrect = false
   for (let i = 0; i < SEQdata.answers.length; i++) {
     let correctAnswer = `${SEQdata.answers[0][i]}`
+    console.log(correctAnswer)
     let userAnswer = $(`#SEQanswer${i} input:checked`).val();
+    console.log(userAnswer)
     if (correctAnswer !== userAnswer) {
       incorrect = true
       break
