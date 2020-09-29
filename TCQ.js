@@ -162,6 +162,14 @@ function checkTCQanswer() {
     $('main').html(
       `
       <h4>${displayCorrectTCQ()}</h4>
+      <br><br>
+      <form id='newVocabForm'>
+        <label>Look up new vocabulary here please:</label>
+        <input id='newVocab' type='text' required>
+        <button id='searchButton' type='submit'>Search</button>
+        <div id='searchResult'></div>
+      </form>
+      <br>
       <h4>Well done!<h4>
       <p>Would you like to try another one?</p>
       <button class='TCQButton' type='submit'>Yes!</button>
@@ -175,7 +183,10 @@ function checkTCQanswer() {
 
 function displayCorrectTCQ() {
   console.log(QuizData.description)
-  let html = `<h3>${QuizData.description}</h3>`
+  let html = `
+  <h3>${QuizData.description}</h3>
+  <h4>Correct Answer:</h4>
+  `
   for (let i = 0; i < QuizData.answers.length; i++) {
     html += `
     <p>${QuizData.options[i][QuizData.answers[i][0]]}</p>
@@ -188,12 +199,13 @@ function wrongAnswer() {
   console.log("wrong!")
   $('main').html(
     `
-    <h3>Correct Answers: ${displayCorrectTCQ()}</h3>
+    <h3>${displayCorrectTCQ()}</h3>
     <br><br>
     <form id='newVocabForm'>
       <label>Look up new vocabulary here please:</label>
       <input id='newVocab' type='text' required>
       <button id='searchButton' type='submit'>Search</button>
+      <div id='searchResult'></div>
     </form>
     <br>
     <h4>Not quite there yet... but you are on the right track!</h4>
@@ -210,20 +222,21 @@ function watchForm() {
   $('main').on('submit', '#newVocabForm', event => {
     event.preventDefault();
     console.log('submit')
-    const searchURL = `OwlBotSeachURL${'#newVocab'.text()}`
-    dictionary(searchURL);
+    let searchWord = $('#newVocab').val();
+    console.log(searchWord)
+    dictionary(searchWord);
   })
 }
 
-function dictionary(searchURL) {
+function dictionary(searchWord) {
   let params = {
     method: 'GET',
     headers: {
-        'Authorization': 'Token ' + OwlBotKey
+      'Authorization': 'Token ' + OwlBotKey
     }
-}
-  
-  fetch(searchURL, params)
+  }
+
+  fetch(`https://owlbot.info/api/v4/dictionary/${searchWord}`, params)
     .then(res => {
       console.log(res)
       if (res.ok) {
@@ -231,11 +244,31 @@ function dictionary(searchURL) {
       }
       return res.json().then(error => Promise.reject(error))
     })
-    .then(resJson => showResults(resJson))
+    .then(definitions => showResults(definitions))
     .catch(error => {
       console.log(error);
       errorMessage(error)
     });
+}
+
+function showResults(definitions) {
+  console.log(definitions)
+  let searchWord = $('#newVocab').val();
+  let wordResult = '';
+  $('#searchResult').html(searchWord)
+  for (let i = 0; i < definitions.definitions.length; i++) {
+    wordResult += `
+      <ol>
+      <h4>Part of Speech: ${definitions.definitions[i].type}</h4>
+      <br>
+      <h4>Definition: ${definitions.definitions[i].definition}</h4>
+      <br>
+      <h4>Example: ${definitions.definitions[i].example}</h4>
+      <br><br>
+      </ol>
+    `
+  }
+  $('#searchResult').html(wordResult)
 }
 
 $(

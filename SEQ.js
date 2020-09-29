@@ -67,6 +67,14 @@ function checkSEQanswer() {
     $('main').html(
       `
         <h4>${displayCorrectSEQ()}</h4>
+        <br><br>
+          <form id='newVocabForm'>
+            <label>Look up new vocabulary here please:</label>
+            <input id='newVocab' type='text' required>
+            <button id='searchButton' type='submit'>Search</button>
+            <div id='searchResult'></div>
+          </form>
+          <br>
         <h4>Well done!<h4>
         <p>Would you like to try another one?</p>
         <button class='SEQButton'>Yes!</button>
@@ -83,7 +91,10 @@ function checkSEQanswer() {
 
 function displayCorrectSEQ() {
   console.log(SEQdata.description)
-  let html = `<h2>${SEQdata.description}</h2>`
+  let html = `
+  <h3>${SEQdata.description}</h3>
+  <h4>Correct Answer:</h4>
+  `
   for (let i = 0; i < SEQdata.answers[0].length; i++) {
     console.log(i)
     html += `<p>${SEQdata.options[0][SEQdata.answers[0][i]]}</p>`
@@ -96,10 +107,21 @@ function wrongSEQanswer() {
   console.log("wrong!")
   $('main').html(
     `
-    <h3>Not quite there yet... but you are on the right track!</h3>
     <h4>${displayCorrectSEQ()}</h4>
+    <br><br>
+    <form id='newVocabForm'>
+      <label>Look up new vocabulary here please:</label>
+      <input id='newVocab' type='text' required>
+      <button id='searchButton' type='submit'>Search</button>
+      <div id='searchResult'></div>
+    </form>
+    <br>
+    <h3>Not quite there yet... but you are on the right track!</h3>
     <p>Would you like to try another one?</p>
     <button class='SEQButton'>Yes!</button>
+    <button class='readyGo' type='button'>
+          <span>Back to Main Menu</span>
+    </button>
     `
   )
 }
