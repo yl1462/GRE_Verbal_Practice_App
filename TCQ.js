@@ -189,7 +189,13 @@ function wrongAnswer() {
   $('main').html(
     `
     <h3>Correct Answers: ${displayCorrectTCQ()}</h3>
-    <h3>Look up new vocabulary here please:
+    <br><br>
+    <form>
+      <label>Look up new vocabulary here please:</label>
+      <input id='newVocab' type='text' required>
+      <button id='searchButton' type='submit'>Search</button>
+    </form>
+    <br>
     <h4>Not quite there yet... but you are on the right track!</h4>
     <p>Would you like to try another one?</p>
     <button class='TCQButton' type='submit'>Yes!</button>

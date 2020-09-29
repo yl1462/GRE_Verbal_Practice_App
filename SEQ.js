@@ -31,7 +31,7 @@ function displaySEQquestions(SEQdata) {
     `
     <form>
     <h4>${SEQdata.description}</h4>
-    <select multiple>${SEQcheckBox()}</select>
+    <select multiple type='checkbox'>${SEQcheckBox()}</select>
      <button class='turnInSEQ' type='submit'>Turn In</button>
     </form>
      `
@@ -58,28 +58,33 @@ function submitSEQanswer() {
 }
 
 function checkSEQanswer() {
-  let userAnswer = ""
-  let correctAnswer = ""
-  for (let i = 0; i < SEQdata.answers.length; i++) {
-    correctAnswer = `${SEQdata.options[0][SEQdata.answers[0][i]]}`
-    console.log(correctAnswer)
-    userAnswer = $('input:checked').val();
-    console.log(userAnswer)
-  }
-    if (correctAnswer !== userAnswer) {
-      wrongSEQanswer()
-    } else {
-      $('main').html(
-        `
-      <h4>Well done!<h4>
-      <p>Would you like to try another one?</p>
-      <button class='SEQButton' type='submit'>Yes!</button>
-      <button class='readyGo' type='button'>
-        <span>Back to Main Menu</span>
-      </button>
-      `
-      )
-    }
+  let correctAnswer1 = `${SEQdata.options[0][SEQdata.answers[0][0]]}`
+  let correctAnswer2 = `${SEQdata.options[0][SEQdata.answers[0][1]]}`
+  console.log(correctAnswer1, correctAnswer2)
+  let userAnswer = $('option:selected').val();
+  console.log(userAnswer)
+  // let userAnswer = ""
+  // let correctAnswer = ""
+  // for (let i = 0; i < SEQdata.answers.length; i++) {
+  //   correctAnswer += `${SEQdata.options[0][SEQdata.answers[0][i]]}`
+  //   console.log(correctAnswer)
+  //   userAnswer += $('option:selected').val();
+  //   console.log(userAnswer)
+  // }
+    // if (correctAnswer !== userAnswer) {
+    //   wrongSEQanswer()
+    // } else {
+    //   $('main').html(
+    //     `
+    //   <h4>Well done!<h4>
+    //   <p>Would you like to try another one?</p>
+    //   <button class='SEQButton' type='submit'>Yes!</button>
+    //   <button class='readyGo' type='button'>
+    //     <span>Back to Main Menu</span>
+    //   </button>
+    //   `
+    //   )
+    // }
   }
 
 
