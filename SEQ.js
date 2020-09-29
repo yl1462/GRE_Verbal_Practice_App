@@ -31,7 +31,7 @@ function displaySEQquestions(SEQdata) {
     `
     <form>
     <h4>${SEQdata.description}</h4>
-    <select multiple type='checkbox'>${SEQcheckBox()}</select>
+    <p>${SEQcheckBox()}</p>
      <button class='turnInSEQ' type='submit'>Turn In</button>
     </form>
      `
@@ -43,7 +43,7 @@ function SEQcheckBox() {
   for (let i = 0; i < SEQdata.options[0].length; i++) {
     option += `
     <br>
-    <option id='SEQanswer' value='${SEQdata.options[0][i]}' type='checkbox'>${SEQdata.options[0][i]}</option>
+    <input id='SEQanswer' value='${SEQdata.options[0][i]}' type='checkbox'>${SEQdata.options[0][i]}
     `
   }
   return option
@@ -61,39 +61,34 @@ function checkSEQanswer() {
   let correctAnswer1 = `${SEQdata.options[0][SEQdata.answers[0][0]]}`
   let correctAnswer2 = `${SEQdata.options[0][SEQdata.answers[0][1]]}`
   console.log(correctAnswer1, correctAnswer2)
-  let userAnswer = $('option:selected').val();
+  let userAnswer = Array.from($('input:checked')).map(el => $(el).val());
   console.log(userAnswer)
-  // let userAnswer = ""
-  // let correctAnswer = ""
-  // for (let i = 0; i < SEQdata.answers.length; i++) {
-  //   correctAnswer += `${SEQdata.options[0][SEQdata.answers[0][i]]}`
-  //   console.log(correctAnswer)
-  //   userAnswer += $('option:selected').val();
-  //   console.log(userAnswer)
-  // }
-    // if (correctAnswer !== userAnswer) {
-    //   wrongSEQanswer()
-    // } else {
-    //   $('main').html(
-    //     `
-    //   <h4>Well done!<h4>
-    //   <p>Would you like to try another one?</p>
-    //   <button class='SEQButton' type='submit'>Yes!</button>
-    //   <button class='readyGo' type='button'>
-    //     <span>Back to Main Menu</span>
-    //   </button>
-    //   `
-    //   )
-    // }
+  if (correctAnswer1 === userAnswer[0] && correctAnswer2 === userAnswer[1]) {
+    $('main').html(
+      `
+        <h4>${displayCorrectSEQ()}</h4>
+        <h4>Well done!<h4>
+        <p>Would you like to try another one?</p>
+        <button class='SEQButton'>Yes!</button>
+        <button class='readyGo' type='button'>
+          <span>Back to Main Menu</span>
+        </button>
+        `
+    )
+  } else {
+    wrongSEQanswer()
   }
+}
 
 
 function displayCorrectSEQ() {
   console.log(SEQdata.description)
   let html = `<h2>${SEQdata.description}</h2>`
-  for (let i = 0; i < SEQdata.answers.length; i++) {
-    html += `${SEQdata.options[0][SEQdata.answers[0][i]]}`
+  for (let i = 0; i < SEQdata.answers[0].length; i++) {
+    console.log(i)
+    html += `<p>${SEQdata.options[0][SEQdata.answers[0][i]]}</p>`
   }
+  console.log(html)
   return html
 }
 
@@ -104,7 +99,7 @@ function wrongSEQanswer() {
     <h3>Not quite there yet... but you are on the right track!</h3>
     <h4>${displayCorrectSEQ()}</h4>
     <p>Would you like to try another one?</p>
-    <button class='SEQButton' type='submit'>Yes!</button>
+    <button class='SEQButton'>Yes!</button>
     `
   )
 }

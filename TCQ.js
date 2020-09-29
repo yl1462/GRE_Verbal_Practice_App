@@ -112,7 +112,7 @@ function fetchTCQquestions() {
 function displayTCQquestions(data) {
   $('main').html(
     `
-    <form>
+    <form id='subTCQ'>
     <h4>${addDropDown(data.data[0].description, data.data[0].options)}</h4>
      <button class='turnIn' type='submit'>Turn in</button>
     </form>
@@ -139,7 +139,7 @@ function addDropDown(desc, options) {
 }
 
 function submitTCQanswer() {
-  $('main').on('submit', 'form', function (event) {
+  $('main').on('submit', '#subTCQ', function (event) {
     event.preventDefault();
     checkTCQanswer();
   })
@@ -178,7 +178,7 @@ function displayCorrectTCQ() {
   let html = `<h3>${QuizData.description}</h3>`
   for (let i = 0; i < QuizData.answers.length; i++) {
     html += `
-    ${QuizData.options[i][QuizData.answers[i][0]]}
+    <p>${QuizData.options[i][QuizData.answers[i][0]]}</p>
     `
   }
   return html
@@ -190,7 +190,7 @@ function wrongAnswer() {
     `
     <h3>Correct Answers: ${displayCorrectTCQ()}</h3>
     <br><br>
-    <form>
+    <form id='newVocabForm'>
       <label>Look up new vocabulary here please:</label>
       <input id='newVocab' type='text' required>
       <button id='searchButton' type='submit'>Search</button>
@@ -198,7 +198,7 @@ function wrongAnswer() {
     <br>
     <h4>Not quite there yet... but you are on the right track!</h4>
     <p>Would you like to try another one?</p>
-    <button class='TCQButton' type='submit'>Yes!</button>
+    <button class='TCQButton'>Yes!</button>
     <button class='readyGo' type='button'>
         <span>Back to Main Menu</span>
     </button>
@@ -206,15 +206,42 @@ function wrongAnswer() {
   )
 }
 
-// function watchForm() {
+function watchForm() {
+  $('main').on('submit', '#newVocabForm', event => {
+    event.preventDefault();
+    console.log('submit')
+    const searchURL = `OwlBotSeachURL${'#newVocab'.text()}`
+    dictionary(searchURL);
+  })
+}
 
-// }
-
-// function disctionary()
+function dictionary(searchURL) {
+  let params = {
+    method: 'GET',
+    headers: {
+        'Authorization': 'Token ' + OwlBotKey
+    }
+}
+  
+  fetch(searchURL, params)
+    .then(res => {
+      console.log(res)
+      if (res.ok) {
+        return res.json()
+      }
+      return res.json().then(error => Promise.reject(error))
+    })
+    .then(resJson => showResults(resJson))
+    .catch(error => {
+      console.log(error);
+      errorMessage(error)
+    });
+}
 
 $(
   welcomePage(),
   showQuestionTypes(),
   TCQButton(),
-  submitTCQanswer()
+  submitTCQanswer(),
+  watchForm()
 )
