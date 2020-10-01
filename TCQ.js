@@ -12,10 +12,12 @@ function welcomePage() {
   $('main').html(
     `
       <section>
+        <h1>GRE Verbal Questions Practice</h1>
+        <br>
         <div>
           <h3>Thank you so much for choosing us! Let's go practicing GRE verbal questions.</h3>
         </div>
-        <div>
+        <div id='readyGoButton'>
           <button class='readyGo' type='button'>
             <span>Ready? GO!</span>
           </button>
@@ -23,25 +25,22 @@ function welcomePage() {
       </section>
       <footer>
         <hr>
-        <section class="contactFont">
+        <section class="contactForm">
           <h5>Contact for Tech Support</h5>
-            <div id="Contact">
-              <div class="group">
-                <div class="item-double">
-                  <form action="https://formspree.io/xgenbrgo" method="POST" enctype="multipart/form-data">
-                    <label for="user-name">Name:</label>
-                    <input id="user-name" type="text" name="name" required>
+            
+            <form action="https://formspree.io/xgenbrgo" method="POST" enctype="multipart/form-data">
+              <label for="user-name">Name:</label>
+              <input id="user-name" type="text" name="name" required><br>
 
-                    <label for="user-email">Email:</label>
-                    <input id="user-email" type="text" name="email" required>
+              <label for="user-email">Email:</label>
+              <input id="user-email" type="text" name="email" required><br>
 
-                    <label for="user-message">Message:</label>
-                    <textarea id="user-message" name="message" required></textarea>
-                    <button type="submit">Submit</button>
-                  </form>
-                </div>
-              </div>
-            </div>
+              <label for="user-message">Message:</label>
+              <textarea id="user-message" name="message" required></textarea><br>
+
+              <button id='ContactFormButton' type="submit">Submit</button>
+            </form>
+                
         </section>
       </footer>
     `
@@ -78,7 +77,7 @@ function displayQuestionTypes() {
         <span>I choose Sentence Equivalence Questions</span>
         </button>
       </div>
-    <section>
+    </section>
     `
   )
 }
@@ -112,6 +111,7 @@ function fetchTCQquestions() {
 function displayTCQquestions(data) {
   $('main').html(
     `
+    <h3>Text Completion Questions</h3>
     <form id='subTCQ'>
     <h4>${addDropDown(data.data[0].description, data.data[0].options)}</h4>
      <button class='turnIn' type='submit'>Turn in</button>
@@ -138,6 +138,7 @@ function addDropDown(desc, options) {
   return option
 }
 
+//event handler for submit answer for TCQ
 function submitTCQanswer() {
   $('main').on('submit', '#subTCQ', function (event) {
     event.preventDefault();
@@ -145,6 +146,7 @@ function submitTCQanswer() {
   })
 }
 
+//check answer(s), must be all correct based on GRE rubric
 function checkTCQanswer() {
   let incorrect = false
   for (let i = 0; i < QuizData.answers.length; i++) {
@@ -164,9 +166,19 @@ function checkTCQanswer() {
       <h4>${displayCorrectTCQ()}</h4>
       <br><br>
       <form id='newVocabForm'>
-        <label>Look up new vocabulary here please:</label>
-        <input id='newVocab' type='text' required>
-        <button id='searchButton' type='submit'>Search</button>
+
+        <div id='searchBar'>
+          <div>
+          <label>Look up new vocabulary here please:</label>
+          </div>
+          <div>
+          <input id='newVocab' type='text' required>
+          </div>
+          <div>
+          <button id='searchButton' type='submit'>Search</button>
+          </div>
+        </div>
+
         <div id='searchResult'></div>
       </form>
       <br>
@@ -181,20 +193,23 @@ function checkTCQanswer() {
   }
 }
 
+//show the correct answer(s) 
 function displayCorrectTCQ() {
   console.log(QuizData.description)
   let html = `
-  <h3>${QuizData.description}</h3>
+  <h3>Text Completion Questions</h3>
+  <h4>${QuizData.description}</h4>
   <h4>Correct Answer:</h4>
   `
   for (let i = 0; i < QuizData.answers.length; i++) {
     html += `
-    <p>${QuizData.options[i][QuizData.answers[i][0]]}</p>
+    <p>${i+1}. ${QuizData.options[i][QuizData.answers[i][0]]}</p>
     `
   }
   return html
 }
 
+//in the event for any wrong answer
 function wrongAnswer() {
   console.log("wrong!")
   $('main').html(
@@ -202,9 +217,20 @@ function wrongAnswer() {
     <h3>${displayCorrectTCQ()}</h3>
     <br><br>
     <form id='newVocabForm'>
-      <label>Look up new vocabulary here please:</label>
-      <input id='newVocab' type='text' required>
-      <button id='searchButton' type='submit'>Search</button>
+
+      <div id='searchBar'>
+      
+        <div>
+        <label>Look up new vocabulary here please:</label>
+        </div>
+        <div>
+        <input id='newVocab' type='text' required>
+        </div>
+        <div>
+        <button id='searchButton' type='submit'>Search</button>
+        </div>
+      </div>
+      
       <div id='searchResult'></div>
     </form>
     <br>
@@ -218,6 +244,7 @@ function wrongAnswer() {
   )
 }
 
+//event handler for dictionary
 function watchForm() {
   $('main').on('submit', '#newVocabForm', event => {
     event.preventDefault();
@@ -228,7 +255,9 @@ function watchForm() {
   })
 }
 
+//add dictionary function to look up words
 function dictionary(searchWord) {
+  //starter for OwlBot API
   let params = {
     method: 'GET',
     headers: {
@@ -251,6 +280,7 @@ function dictionary(searchWord) {
     });
 }
 
+//display a list of definition for the user input word
 function showResults(definitions) {
   console.log(definitions)
   let searchWord = $('#newVocab').val();
@@ -259,12 +289,12 @@ function showResults(definitions) {
   for (let i = 0; i < definitions.definitions.length; i++) {
     wordResult += `
       <ol>
-      <h4>Part of Speech: ${definitions.definitions[i].type}</h4>
+      <h4>${i+1}. Part of Speech: ${definitions.definitions[i].type}</h4>
       <br>
       <h4>Definition: ${definitions.definitions[i].definition}</h4>
       <br>
       <h4>Example: ${definitions.definitions[i].example}</h4>
-      <br><br>
+      <br><hr>
       </ol>
     `
   }
