@@ -1,4 +1,4 @@
-let SEQdata
+let SEQdata;
 //here on is for Sentence Equivalence Questions
 
 function SEQButton() {
@@ -21,8 +21,8 @@ function fetchSEQquestions() {
     .then(data => {
 
       SEQdata = data.data[0];
-      displaySEQquestions(SEQdata)
-    })
+      displaySEQquestions(SEQdata);
+    });
 }
 
 //display SE questions
@@ -36,20 +36,20 @@ function displaySEQquestions(SEQdata) {
      <button class='turnInSEQ' type='submit'>Turn In</button>
     </form>
      `
-  )
+  );
 }
 
 function SEQcheckBox() {
-  let option = ''
+  let option = '';
   for (let i = 0; i < SEQdata.options[0].length; i++) {
     option += `
     <div id='SEQcheckBox'>
     <br>
     <input id='SEQanswer' value='${SEQdata.options[0][i]}' type='checkbox'>${SEQdata.options[0][i]}
     </div>
-    `
+    `;
   }
-  return option
+  return option;
 }
 
 function submitSEQanswer() {
@@ -57,12 +57,12 @@ function submitSEQanswer() {
     event.preventDefault();
 
     checkSEQanswer();
-  })
+  });
 }
 
 function checkSEQanswer() {
-  let correctAnswer1 = `${SEQdata.options[0][SEQdata.answers[0][0]]}`
-  let correctAnswer2 = `${SEQdata.options[0][SEQdata.answers[0][1]]}`
+  let correctAnswer1 = `${SEQdata.options[0][SEQdata.answers[0][0]]}`;
+  let correctAnswer2 = `${SEQdata.options[0][SEQdata.answers[0][1]]}`;
 
   let userAnswer = Array.from($('input:checked')).map(el => $(el).val());
 
@@ -90,9 +90,9 @@ function checkSEQanswer() {
           <span>Back to Main Menu</span>
         </button>
         `
-    )
+    );
   } else {
-    wrongSEQanswer()
+    wrongSEQanswer();
   }
 }
 
@@ -102,13 +102,13 @@ function displayCorrectSEQ() {
   <h3>Sentence Equivalence Questions</h3>
   <h4>${SEQdata.description}</h4>
   <h4>Correct Answer:</h4>
-  `
+  `;
   for (let i = 0; i < SEQdata.answers[0].length; i++) {
 
-    html += `<p>${i + 1}. ${SEQdata.options[0][SEQdata.answers[0][i]]}</p>`
+    html += `<p>${i + 1}. ${SEQdata.options[0][SEQdata.answers[0][i]]}</p>`;
   }
 
-  return html
+  return html;
 }
 
 function wrongSEQanswer() {
@@ -138,7 +138,7 @@ function wrongSEQanswer() {
           <span>Back to Main Menu</span>
     </button>
     `
-  )
+  );
 }
 
 $(

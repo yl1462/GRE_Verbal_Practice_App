@@ -1,6 +1,6 @@
 const GREKey = 'f6bf5906c1msh45ccd6bea4e4595p19e710jsn64d68bc7e7d2';
 const GRESearchURL = 'https://gre-verbal.p.rapidapi.com';
-let QuizData
+let QuizData;
 
 const OwlBotKey = '9faa238a2ea15e95757bb04c25875855ffbb8f94';
 const OwlBotSearchURL = 'https://owlbot.info/api/v4/dictionary/';
@@ -22,35 +22,15 @@ function welcomePage() {
           </button>
         </div>
       </section>
-      <footer>
-        <hr>
-        <section class="contactForm">
-          <h5>Contact for Tech Support</h5>
-            
-            <form action="https://formspree.io/xgenbrgo" method="POST" enctype="multipart/form-data">
-              <label for="user-name">Name:</label>
-              <input id="user-name" type="text" name="name" required><br>
-
-              <label for="user-email">Email:</label>
-              <input id="user-email" type="text" name="email" required><br>
-
-              <label for="user-message">Message:</label>
-              <textarea id="user-message" name="message" required></textarea><br>
-
-              <button id='ContactFormButton' type="submit">Submit</button>
-            </form>
-                
-        </section>
-      </footer>
     `
-  )
+  );
 }
 
 //let the user choose a question type out of 2
 function showQuestionTypes() {
   $('main').on('click', '.readyGo', function () {
     displayQuestionTypes();
-  })
+  });
 }
 
 //pairing with the function above to display the 2 question types
@@ -77,7 +57,7 @@ function displayQuestionTypes() {
       </div>
     </section>
     `
-  )
+  );
 }
 
 //when user choose Text Completion question
@@ -99,8 +79,8 @@ function fetchTCQquestions() {
     .then(res => res.json())
     .then(data => {
       QuizData = data.data[0];
-      displayTCQquestions(data)
-    })
+      displayTCQquestions(data);
+    });
 }
 
 //display tc questions
@@ -113,25 +93,25 @@ function displayTCQquestions(data) {
      <button class='turnIn' type='submit'>Turn in</button>
     </form>
      `
-  )
+  );
 }
 
 //the drop down select function
 function addDropDown(desc, options) {
-  let question = desc.split('__________')
-  let option = ''
+  let question = desc.split('__________');
+  let option = '';
   for (let i = 0; i < options.length; i++) {
-    option += `${question[i]}`
-    option += `<select id='TCQanswer${i}'>`
+    option += `${question[i]}`;
+    option += `<select id='TCQanswer${i}'>`;
     for (let j = 0; j < options[i].length; j++) {
-      option += `<option value="${j}">${options[i][j]}</option>`
+      option += `<option value="${j}">${options[i][j]}</option>`;
     }
-    option += `</select>`
+    option += `</select>`;
     if (i === options.length - 1) {
-      option += `${question[i + 1]}`
+      option += `${question[i + 1]}`;
     }
   }
-  return option
+  return option;
 }
 
 //event handler for submit answer for TCQ
@@ -139,22 +119,22 @@ function submitTCQanswer() {
   $('main').on('submit', '#subTCQ', function (event) {
     event.preventDefault();
     checkTCQanswer();
-  })
+  });
 }
 
 //check answer(s), must be all correct based on GRE rubric
 function checkTCQanswer() {
-  let incorrect = false
+  let incorrect = false;
   for (let i = 0; i < QuizData.answers.length; i++) {
-    let correctAnswer = `${QuizData.answers[i][0]}`
+    let correctAnswer = `${QuizData.answers[i][0]}`;
     let userAnswer = $(`#TCQanswer${i} option:selected`).val();
     if (correctAnswer !== userAnswer) {
-      incorrect = true
-      break
+      incorrect = true;
+      break;
     }
   }
   if (incorrect) {
-    wrongAnswer()
+    wrongAnswer();
   } else {
     $('main').html(
       `
@@ -184,7 +164,7 @@ function checkTCQanswer() {
         <span>Back to Main Menu</span>
       </button>
       `
-    )
+    );
   }
 }
 
@@ -194,13 +174,13 @@ function displayCorrectTCQ() {
   <h3>Text Completion Questions</h3>
   <h4>${QuizData.description}</h4>
   <h4>Correct Answer:</h4>
-  `
+  `;
   for (let i = 0; i < QuizData.answers.length; i++) {
     html += `
-    <p>${i+1}. ${QuizData.options[i][QuizData.answers[i][0]]}</p>
-    `
+    <p>${i + 1}. ${QuizData.options[i][QuizData.answers[i][0]]}</p>
+    `;
   }
-  return html
+  return html;
 }
 
 //in the event for any wrong answer
@@ -234,7 +214,7 @@ function wrongAnswer() {
         <span>Back to Main Menu</span>
     </button>
     `
-  )
+  );
 }
 
 //event handler for dictionary
@@ -243,7 +223,7 @@ function watchForm() {
     event.preventDefault();
     let searchWord = $('#newVocab').val();
     dictionary(searchWord);
-  })
+  });
 }
 
 //add dictionary function to look up words
@@ -254,18 +234,18 @@ function dictionary(searchWord) {
     headers: {
       'Authorization': 'Token ' + OwlBotKey
     }
-  }
+  };
 
   fetch(`https://owlbot.info/api/v4/dictionary/${searchWord}`, params)
     .then(res => {
       if (res.ok) {
-        return res.json()
+        return res.json();
       }
-      return res.json().then(error => Promise.reject(error))
+      return res.json().then(error => Promise.reject(error));
     })
     .then(definitions => showResults(definitions))
     .catch(error => {
-      errorMessage(error)
+      errorMessage(error);
     });
 }
 
@@ -273,20 +253,20 @@ function dictionary(searchWord) {
 function showResults(definitions) {
   let searchWord = $('#newVocab').val();
   let wordResult = '';
-  $('#searchResult').html(searchWord)
+  $('#searchResult').html(searchWord);
   for (let i = 0; i < definitions.definitions.length; i++) {
     wordResult += `
       <ol>
-      <h4>${i+1}. Part of Speech: ${definitions.definitions[i].type}</h4>
+      <h4>${i + 1}. Part of Speech: ${definitions.definitions[i].type}</h4>
       <br>
       <h4>Definition: ${definitions.definitions[i].definition}</h4>
       <br>
       <h4>Example: ${definitions.definitions[i].example}</h4>
       <br><hr>
       </ol>
-    `
+    `;
   }
-  $('#searchResult').html(wordResult)
+  $('#searchResult').html(wordResult);
 }
 
 $(
