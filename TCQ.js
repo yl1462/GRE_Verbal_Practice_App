@@ -164,7 +164,7 @@ function checkTCQanswer() {
     $('main').html(
       `
       <h4>${displayCorrectTCQ()}</h4>
-      <br><br>
+      <br>
       <form id='newVocabForm'>
 
         <div id='searchBar'>

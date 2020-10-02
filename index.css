@@ -1,13 +1,14 @@
 body {
-  background-color: #ab3428;
-  color: #ffd131;
+  background-color: #f4f1de;
+  color: #3d405b;
   text-align: center;
+  line-height: 40px;
 }
 
 h1 {
-  background-color: #011638;
+  background-color: #f2cc8f;
   font-size: 35px;
-  color: #ffd131;
+  color: #3d405b;
   margin: 0;
   padding: 50px 10px
 }
@@ -24,9 +25,9 @@ h3, h4 {
 }
 
 .readyGo,.TCQButton,.SEQButton,.turnIn,.turnInSEQ {
-  background-color: #f49e4c;
-  color: #FFF;
-  margin: 10px;
+  background-color: #E07A5F;
+  color: #3d405b;
+  margin: 15px 10px;
   padding: 15px 25px;
   border-radius: 50%;
   font-size: 20px;
@@ -37,10 +38,6 @@ h3, h4 {
   flex-flow: column wrap;
   align-items: center;
   font-size: 20px;
-}
-
-h5 {
-  font-size: 23px;
 }
 
 footer form {
@@ -62,8 +59,8 @@ footer form textarea {
 #ContactFormButton {
   align-self: center;
   margin-bottom: 50px;
-  background-color: #f49e4c;
-  color: #FFF;
+  background-color: #E07A5F;
+  color: #3d405b;
   padding: 15px 25px;
   border-radius: 50%;
   font-size: 20px;
@@ -90,4 +87,39 @@ p {
 
 #SEQanswer {
   margin: 5px 15px;
+}
+
+hr {
+  margin: 15px 5px;
+}
+
+@media screen and (min-width: 600px) {
+  h1 {
+    font-size: 50px;
+  }
+
+  h3, h4 {
+    font-size: 35px;
+  }
+
+  .contactForm {
+    font-size: 30px;
+  }
+
+  p {
+    font-size: 32px;
+    padding: 5px 10px;
+  }
+
+  .readyGo,.TCQButton,.SEQButton,.turnIn,.turnInSEQ {
+    font-size: 27px;
+  }
+
+  #newVocabForm {
+    font-size: 32px;
+  }
+
+  #SEQcheckBox {
+    font-size: 32px;
+  }
 }
