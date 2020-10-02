@@ -8,7 +8,6 @@ const OwlBotSearchURL = 'https://owlbot.info/api/v4/dictionary/';
 
 //welcome page
 function welcomePage() {
-  console.log("welcome page running")
   $('main').html(
     `
       <section>
@@ -50,7 +49,6 @@ function welcomePage() {
 //let the user choose a question type out of 2
 function showQuestionTypes() {
   $('main').on('click', '.readyGo', function () {
-    console.log("display questions type choice");
     displayQuestionTypes();
   })
 }
@@ -85,7 +83,6 @@ function displayQuestionTypes() {
 //when user choose Text Completion question
 function TCQButton() {
   $('main').on('click', '.TCQButton', function () {
-    console.log('displaying TCQ questions');
     fetchTCQquestions();
   });
 }
@@ -101,7 +98,6 @@ function fetchTCQquestions() {
   })
     .then(res => res.json())
     .then(data => {
-      console.log(data);
       QuizData = data.data[0];
       displayTCQquestions(data)
     })
@@ -152,7 +148,6 @@ function checkTCQanswer() {
   for (let i = 0; i < QuizData.answers.length; i++) {
     let correctAnswer = `${QuizData.answers[i][0]}`
     let userAnswer = $(`#TCQanswer${i} option:selected`).val();
-    console.log(userAnswer)
     if (correctAnswer !== userAnswer) {
       incorrect = true
       break
@@ -195,7 +190,6 @@ function checkTCQanswer() {
 
 //show the correct answer(s) 
 function displayCorrectTCQ() {
-  console.log(QuizData.description)
   let html = `
   <h3>Text Completion Questions</h3>
   <h4>${QuizData.description}</h4>
@@ -211,7 +205,6 @@ function displayCorrectTCQ() {
 
 //in the event for any wrong answer
 function wrongAnswer() {
-  console.log("wrong!")
   $('main').html(
     `
     <h3>${displayCorrectTCQ()}</h3>
@@ -248,9 +241,7 @@ function wrongAnswer() {
 function watchForm() {
   $('main').on('submit', '#newVocabForm', event => {
     event.preventDefault();
-    console.log('submit')
     let searchWord = $('#newVocab').val();
-    console.log(searchWord)
     dictionary(searchWord);
   })
 }
@@ -267,7 +258,6 @@ function dictionary(searchWord) {
 
   fetch(`https://owlbot.info/api/v4/dictionary/${searchWord}`, params)
     .then(res => {
-      console.log(res)
       if (res.ok) {
         return res.json()
       }
@@ -275,14 +265,12 @@ function dictionary(searchWord) {
     })
     .then(definitions => showResults(definitions))
     .catch(error => {
-      console.log(error);
       errorMessage(error)
     });
 }
 
 //display a list of definition for the user input word
 function showResults(definitions) {
-  console.log(definitions)
   let searchWord = $('#newVocab').val();
   let wordResult = '';
   $('#searchResult').html(searchWord)

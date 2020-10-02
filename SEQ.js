@@ -3,7 +3,7 @@ let SEQdata
 
 function SEQButton() {
   $('main').on('click', '.SEQButton', function () {
-    console.log('displaying SEQ questions');
+  
     fetchSEQquestions();
   });
 }
@@ -19,7 +19,7 @@ function fetchSEQquestions() {
   })
     .then(res => res.json())
     .then(data => {
-      console.log(data);
+
       SEQdata = data.data[0];
       displaySEQquestions(SEQdata)
     })
@@ -55,7 +55,7 @@ function SEQcheckBox() {
 function submitSEQanswer() {
   $('main').on('click', '.turnInSEQ', function (event) {
     event.preventDefault();
-    console.log('checkingSEQanswer')
+
     checkSEQanswer();
   })
 }
@@ -63,9 +63,9 @@ function submitSEQanswer() {
 function checkSEQanswer() {
   let correctAnswer1 = `${SEQdata.options[0][SEQdata.answers[0][0]]}`
   let correctAnswer2 = `${SEQdata.options[0][SEQdata.answers[0][1]]}`
-  console.log(correctAnswer1, correctAnswer2)
+
   let userAnswer = Array.from($('input:checked')).map(el => $(el).val());
-  console.log(userAnswer)
+
   if (correctAnswer1 === userAnswer[0] && correctAnswer2 === userAnswer[1]) {
     $('main').html(
       `
@@ -104,15 +104,15 @@ function displayCorrectSEQ() {
   <h4>Correct Answer:</h4>
   `
   for (let i = 0; i < SEQdata.answers[0].length; i++) {
-    console.log(i)
+
     html += `<p>${i + 1}. ${SEQdata.options[0][SEQdata.answers[0][i]]}</p>`
   }
-  console.log(html)
+
   return html
 }
 
 function wrongSEQanswer() {
-  console.log("wrong!")
+
   $('main').html(
     `
     <h4>${displayCorrectSEQ()}</h4>
